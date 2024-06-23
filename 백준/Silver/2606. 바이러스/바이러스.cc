@@ -1,45 +1,45 @@
-#include<iostream>
-#include<string>
-#include<vector>
+#include <iostream>
+#include <string>
+#include <vector>
 
 
 using namespace std;
 
-int N = 0;
-int M = 0;
-
-vector<int> Computers[101] = {};
+vector<int> Graph[101];
 bool Visited[101] = {};
-int Infected = 0;
-
-void Dfs(int Start)
+int N;
+int Result = 0;
+void Dfs(int Start = 1)
 {
     Visited[Start] = true;
-    
-    for(int i = 0; i < Computers[Start].size(); ++i)
+    for(int i = 0; i < Graph[Start].size(); ++i)
     {
-        int Index = Computers[Start][i];
-        if(false == Visited[Index])
+        int Next = Graph[Start][i];
+        if(Visited[Next] == false)
         {
-            ++Infected;
-            Dfs(Index);
+            Result++;
+            Dfs(Next);
         }
     }
 }
+
 int main(void)
 {
-    cin >> N >> M;
+    cin >> N;
+    int M;
+    cin >> M;
     
     for(int i = 0; i < M; ++i)
     {
         int From, To;
         cin >> From >> To;
-        Computers[From].push_back(To);
-        Computers[To].push_back(From);
+        
+        Graph[From].push_back(To);
+        Graph[To].push_back(From);
     }
     
-    Dfs(1);
+    Dfs();
     
-    cout << Infected;
+    cout << Result;
     
 }
