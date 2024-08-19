@@ -1,67 +1,54 @@
 #include <iostream>
 #include <string>
-#include <string.h>
 #include <queue>
-#include <vector>
-
 
 using namespace std;
 
 int N, M;
+
 int Map[501][501];
 bool Visited[501][501];
 
-int PictureCount = 0;
+int DirX[4] = { 0, 0, -1, 1};
+int DirY[4] = { -1, 1, 0, 0};
 
-int Area = 0;
-int MaxPictureArea = 0;
-
-int Dx[4] = { -1, 1, 0, 0 };
-int Dy[4] = { 0, 0, -1, 1 };
-
-void Reset()
-{
-    memset(Visited, false, sizeof(N * N));
-    Area = 0;
-}
-
-void Bfs(int StartY, int StartX)
+int Bfs(int StartX, int StartY)
 {
     queue<pair<int, int>> q;
-    q.push(make_pair(StartY, StartX));
-    
+    q.push(make_pair(StartX, StartY));
     Visited[StartY][StartX] = true;
-    Area = 1;
+    
+    int Result = 1;
     
     while(!q.empty())
     {
-        pair<int, int> Pair = q.front();
+        pair<int, int> Current = q.front();
         q.pop();
         
         for(int i = 0; i < 4; ++i)
         {
-            int NextY = Pair.first + Dy[i];
-            int NextX = Pair.second + Dx[i];
-            
-            
-            if(0 > NextX || 0 > NextY || N <= NextY || M <= NextX)
+            int NextX = Current.first + DirX[i];
+            int NextY = Current.second + DirY[i];
+            if(0 > NextX || 0 > NextY || NextX >= M || NextY >= N)
                 continue;
             
             if(Visited[NextY][NextX] == false && Map[NextY][NextX] == 1)
             {
                 Visited[NextY][NextX] = true;
-                q.push(make_pair(NextY, NextX));
-                Area++;
+                q.push(make_pair(NextX, NextY));
+                Result++;
             }
         }
     }
-    
+    return Result;
 }
 
 int main(void)
 {
     cin >> N >> M;
     
+    int Cnt = 0;
+    int Max = 0;
     for(int i = 0; i < N; ++i)
     {
         for(int j = 0; j < M; ++j)
@@ -74,17 +61,14 @@ int main(void)
     {
         for(int j = 0; j < M; ++j)
         {
-            if(Map[i][j] == 1 && false == Visited[i][j])
+            if(Map[i][j] == 1 && Visited[i][j] == false)
             {
-                Reset();
-                PictureCount++;
-                Bfs(i, j);
-                MaxPictureArea = max(Area, MaxPictureArea);
+                Cnt++;
+                Max = max(Bfs(j, i), Max);
             }
         }
     }
     
-    cout << PictureCount << "\n";
-    MaxPictureArea = (PictureCount == 0) ? 0 : MaxPictureArea;
-    cout << MaxPictureArea;
+    cout << Cnt << "\n";
+    cout << Max;
 }
