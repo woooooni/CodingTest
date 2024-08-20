@@ -1,59 +1,71 @@
 #include <iostream>
-#include <utility>
 #include <string>
 #include <queue>
 
 using namespace std;
 
-int main(){
-	
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	
-	string arr[101]; // 미로
-	int dist[101][101]; // 이동 거리
-	bool chk[101][101]; // 방문 체크
-	
-	queue<pair<int,int> > Q;
-	int n,m;
+int N, M;
+int Map[101][101];
+bool Visited[101][101];
 
-	cin >> n >> m;
-	
-	int dx[4] = {1,0,-1,0};
-	int dy[4] = {0,1,0,-1};
-	
-	for(int i=0; i<n; i++){
-		cin >> arr[i];	
-	}
-	
-	dist[0][0] = 1;
-	Q.push({0,0});
-	chk[0][0] = 1;
-	
-	while(!Q.empty())
+int DirX[4] = { 0, 0, -1, 1};
+int DirY[4] = {-1, 1, 0, 0};
+bool IsIn(int x, int y)
+{
+    return 0 <= x && 0 <= y && x < M && y < N;
+}
+
+void Bfs()
+{
+    queue<pair<pair<int, int>, int>> q;
+    q.push(make_pair(make_pair(0, 0), 1));
+    Visited[0][0] = true;
+    
+    while(!q.empty())
     {
-		pair<int,int> cur = Q.front();
-		Q.pop();
-		
-		for(int dir=0; dir<4; dir++){ 
-			int nx = cur.first + dx[dir];
-			int ny = cur.second + dy[dir];
-			
-			if(nx < 0 || nx >= n || ny < 0 || ny >=m)
-				continue;
-				
-			if(arr[nx][ny]=='0' || chk[nx][ny])
-				continue;
-			
-			dist[nx][ny] = dist[cur.first][cur.second] + 1;
-			Q.push({nx,ny});
-			chk[nx][ny] = 1;
-			
-		}
-	}
+        pair<int, int> Current = q.front().first;
+        int Dist = q.front().second;
+        q.pop();
+        
+        if(Current.first == M - 1 && Current.second == N - 1)
+        {
+            cout << Dist;
+            return;
+        }
+        
+        for(int i =0 ; i < 4; ++i)
+        {
+            int NextX = DirX[i] + Current.first;
+            int NextY = DirY[i] + Current.second;
+            
+            if(IsIn(NextX, NextY))
+            {
+                if(Map[NextY][NextX] == 1 && Visited[NextY][NextX] == false)
+                {
+                    Visited[NextY][NextX] = true;
+                    q.push(make_pair(make_pair(NextX, NextY), Dist + 1));
+                }
+            }
+        }
+    }
+    
+}
 
-	cout << dist[n-1][m-1];
-	
-	return 0; 
-
-} 
+int main(void)
+{
+    cin >> N >> M;
+    
+    for(int i =0 ; i < N; ++i)
+    {
+        string Input;
+        cin >> Input;
+        for(int j = 0; j < Input.length(); ++j)
+        {
+            Map[i][j] = int(Input[j] - '0');
+        }
+    }
+    
+    Bfs();
+    
+    
+}
