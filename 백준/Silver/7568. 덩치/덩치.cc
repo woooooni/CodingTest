@@ -1,20 +1,51 @@
 #include <iostream>
-#include <utility>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int main() {
-    int num;
-    int rank = 1;
-    pair<int,int> arr[50];
-    cin >> num;
-    for(int i = 0; i < num; i++)
-        cin >> arr[i].first >> arr[i].second;
-    for(int i = 0; i < num; i++)
+int N;
+vector<pair<int, int>> People;
+
+bool IsBig(pair<int, int> Left, pair<int, int> Right)
+{
+    return (Left.first > Right.first) && (Left.second > Right.second);
+}
+
+int main(void)
+{
+    cin >> N;
+    
+    vector<int> Results;
+    
+    for(int i = 0; i < N; ++i)
     {
-        for(int j = 0; j < num; j++)
-            if(arr[i].first < arr[j].first && arr[i].second < arr[j].second)
-                rank++;
-        cout << rank << ' ';
-        rank = 1;
+        int Weight;
+        int Height;
+        cin >> Weight;
+        cin >> Height;
+        
+        People.push_back(make_pair(Weight, Height));
+    }
+    
+    for(int i = 0; i < People.size(); ++i)
+    {
+        int Rank = 1;
+        for(int j =0; j < People.size(); ++j)
+        {
+            if(i == j)
+                continue;
+            
+            if(true == IsBig(People[j], People[i]))
+            {
+                ++Rank;
+            }
+        }
+        Results.push_back(Rank);
+    }
+
+   
+    for(int i = 0; i  < Results.size(); ++i)
+    {
+        cout << Results[i] << " ";
     }
 }
