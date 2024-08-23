@@ -1,46 +1,51 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <map>
+#include <unordered_set>
 
 using namespace std;
 
-int main(void)
-{   
-    int N;
-    int GroupCount = 0;
-    cin >> N;
+bool Check(string Input)
+{
+    unordered_set<char> s;
     
-    string Input;
-    for(int i = 0; i< N; ++i)
+    char Dest = Input[0];
+    
+    for(int i = 0; i  < Input.length(); ++i)
     {
-        cin >> Input;
-        
-        string PrevAlphabet = "";
-        
-        bool IsGroup = true;
-        vector<int> AlphabetCount(26, 0);
-        
-        for(int j = 0; j < Input.length(); ++j)
-        {   
-            string CurAlphabet = to_string(Input[j]);
-            int Index = Input[j] - 'a';
-            
-            if(0 < AlphabetCount[Index] && PrevAlphabet != CurAlphabet)
+        char Current = Input[i];
+        if(s.end() == s.find(Current))
+        {
+            Dest = Current;
+            s.emplace(Current);
+        }
+        else if(s.end() != s.find(Current))
+        {
+            if(Dest != Current)
             {
-                IsGroup = false;
-                break;
-            }
-            else
-            {
-                AlphabetCount[Index]++;
-                PrevAlphabet = CurAlphabet;
+                return false;
             }
         }
-        
-        if(true == IsGroup)
-            GroupCount++;
     }
     
-    cout << GroupCount;
+    return true;
+}
+
+
+int main(void)
+{
+    int N;
+    cin >> N;
     
+    int Result = 0;
+    
+    for(int i =0 ; i < N; ++i)
+    {
+        string Input;
+        cin >> Input;
+        if(Check(Input) == true)
+            Result++;
+    }
+    
+    cout << Result;
 }
