@@ -1,49 +1,34 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include <stack>
-#include <list>
-#include <map>
-#include <queue>
-#include <algorithm>
 
-
-#define MAX_ALPHABET 26
 using namespace std;
 
-
-int main()
+int K;
+int main(void)
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-
-    stack<int> numbers;
-    int K = 0;
-    int result = 0;
+    stack<int> s;
     cin >> K;
-#pragma region BOJ 10773 제로
-    for (int i = 0; i < K; ++i)
+    
+    for(int i =0 ; i <K; ++i)
     {
-        int number = 0;
-        cin >> number;
-        if (0 == number)
+        int Input;
+        cin >> Input;
+        
+        if(Input == 0)
         {
-            numbers.pop();
-            continue;
+            s.pop();
         }
-
-        numbers.push(number);
+        else
+        {
+            s.push(Input);
+        }
     }
     
-    int stackSize = numbers.size();
-    for (int i = 0; i < stackSize; ++i)
+    int Result = 0;
+    while(!s.empty())
     {
-        result += numbers.top();
-        numbers.pop();
+        Result += s.top();
+        s.pop();
     }
-
-    cout << result;
-#pragma endregion
+    cout << Result;
 }
