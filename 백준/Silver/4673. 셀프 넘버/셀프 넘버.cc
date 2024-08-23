@@ -3,44 +3,39 @@
 
 using namespace std;
 
+int Numbers[10001];
 
-bool Check[10001];
-int d(int Number) 
+int GetIdx(int Input)
 {
-    
-	int Sum = Number;
- 
-	while (Number != 0) 
+    int Result = Input;
+    while(Input != 0)
     {
-		Sum = Sum + (Number % 10);
-		Number = Number / 10;
-	}
-	return Sum;
+        Result += (Input % 10);
+        Input /= 10;
+    }
+    return Result;
 }
- 
+
 int main(void)
 {
     ios_base::sync_with_stdio(NULL);
+    cin.tie(NULL);
     cout.tie(NULL);
-
- 
-	for (int i = 1; i < 10001; i++) 
-    {
-		int N = d(i);
-		if (N < 10001) 
-        {
-			Check[N] = true;
-		}
-	}
     
-    for (int i = 1; i < 10001; i++) 
+    for(int  i = 1; i <= 10000; ++i)
     {
-        if(Check[i] == false)
+        int Idx = GetIdx(i);
+        if(10000 >= Idx)
+        {
+            Numbers[Idx] = 1;
+        }
+    }
+    
+    for(int  i = 1; i <= 10000; ++i)
+    {
+        if(Numbers[i] != 1)
         {
             cout << i << "\n";
         }
     }
-    
-    
-	return 0;
 }
