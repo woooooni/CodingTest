@@ -1,51 +1,45 @@
-#include <queue>
-#include <vector>
-
 #include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
 
 using namespace std;
+
 int N;
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+int Result = 0;
+vector<pair<int, int>> Times;
 
 int main(void)
 {
     cin >> N;
+    Times.resize(N);
     for(int i = 0; i < N; ++i)
     {
-        int Start, End;
-        cin >> Start >> End;
-        
-        pq.push(make_pair(End, Start));
+        cin >> Times[i].first;
+        cin >> Times[i].second;
     }
     
-    int BeforeStart = 0;
-    int BeforeEnd = 0;
+    sort(Times.begin(), Times.end(), [](pair<int, int> Left, pair<int, int> Right){
+        if(Left.second == Right.second)
+        {
+            return Left.first < Right.first;
+        }
+        else
+        {
+            return Left.second < Right.second;
+        }
+    });
     
-    int Result = 0;
-    while(!pq.empty())
+    int Time = 0;
+    for(int i = 0; i < Times.size(); ++i)
     {
-        int CurrentStart = pq.top().second;
-        int CurrentEnd = pq.top().first;
-        pq.pop();
-        
-        if(BeforeEnd > CurrentStart)
-        {
+        if(Time > Times[i].first) 
             continue;
-        }
-        
-        if(CurrentStart == CurrentEnd)
-        {
-            Result++;
-            BeforeStart = CurrentStart;
-            BeforeEnd = CurrentEnd;
-            continue;
-        }
         
         Result++;
-        BeforeStart = CurrentStart;
-        BeforeEnd = CurrentEnd;
-        
+        Time = Times[i].second;
     }
     
-    cout << Result << "\n";
+    cout << Result;
 }
