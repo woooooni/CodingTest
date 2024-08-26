@@ -4,40 +4,33 @@
 
 using namespace std;
 
-bool IsNumber(char c)
-{
-    return isdigit(c);
-}
-
 int main(void)
 {
     string Input;
+    
     cin >> Input;
+    string Sum = "";
+    int Result = 0;
     
     bool bMinus = false;
-    
-    string NumberStr = "";
-    int Sum = 0;
-    
-    for(int i = 0; i <= Input.length(); ++i)
+    for(int i = 0; i <= Input.size(); ++i)
     {
-        if(Input[i] == '+' || Input[i] == '-' || Input.length() == i)
+        if(Input[i] == '+' || Input[i] == '-' || i == Input.size())
         {
             if(bMinus)
             {
-                Sum -= stoi(NumberStr);
-                NumberStr = "";
+                Result -= stoi(Sum);
+                Sum = "";
             }
             else
             {
-                Sum += stoi(NumberStr);
-                NumberStr = "";
+                Result += stoi(Sum);
+                Sum = "";
             }
-            
         }
         else
         {
-            NumberStr += Input[i];
+            Sum += Input[i];
         }
         
         if(Input[i] == '-')
@@ -46,5 +39,6 @@ int main(void)
         }
     }
     
-    cout << Sum;
+    cout << Result;
+    
 }
