@@ -1,33 +1,33 @@
 #include <iostream>
+#include <string>
+#include <vector>
 #include <limits.h>
 
 using namespace std;
 
-
 int N, M;
-
-int MinSetPrice = INT_MAX;
-int MinOnePrice = INT_MAX;
+int MinSix = INT_MAX;
+int MinOne = INT_MAX;
+int Answer = INT_MAX;
 
 int main(void)
 {
     cin >> N >> M;
-    
-    for(int i =0 ; i < M; ++i)
+
+    for(int i =0 ; i  < M; ++i)
     {
-        int SetPrice;
+        int SixPrice;
         int OnePrice;
+        cin >> SixPrice >> OnePrice;
         
-        cin >> SetPrice;
-        cin >> OnePrice;
-        
-        MinSetPrice = min(MinSetPrice, SetPrice);
-        MinOnePrice = min(MinOnePrice, OnePrice);
+        MinSix = min(MinSix, SixPrice);
+        MinOne = min(MinOne, OnePrice);
     }
     
-    int Result = (((N / 6) * MinSetPrice)) + ((N % 6) * MinOnePrice);
-    Result = min(Result, ((N) / 6 + 1) * MinSetPrice);
-    Result = min(Result, N * MinOnePrice);
+    Answer = min(Answer, MinOne * N);
+    Answer = min(Answer, MinSix * (N / 6 + 1));
+    Answer = min(Answer, MinSix * (N / 6) + MinOne * (N % 6));
     
-    cout << Result;
+    cout << Answer;
+    
 }
