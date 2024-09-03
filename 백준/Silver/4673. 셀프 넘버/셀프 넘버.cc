@@ -1,41 +1,38 @@
 #include <iostream>
+#include <vector>
 #include <string>
 
 using namespace std;
+vector<int> Ctor;
 
-int Numbers[10001];
-
-int GetIdx(int Input)
+int GetCtor(int Num)
 {
-    int Result = Input;
-    while(Input != 0)
+    int Sum = Num;
+    while(Num > 0)
     {
-        Result += (Input % 10);
-        Input /= 10;
+        Sum += (Num % 10);
+        Num /= 10;
     }
-    return Result;
+    
+    return Sum;
 }
 
 int main(void)
 {
-    ios_base::sync_with_stdio(NULL);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    
-    for(int  i = 1; i <= 10000; ++i)
+    Ctor.resize(10002);
+    for(int i = 1; i <= 10000; ++i)
     {
-        int Idx = GetIdx(i);
-        if(10000 >= Idx)
+        int Idx = GetCtor(i);
+        if(Idx <= 10000)
         {
-            Numbers[Idx] = 1;
+            Ctor[Idx] = i;
         }
     }
     
-    for(int  i = 1; i <= 10000; ++i)
+    for(int i = 1; i <= 10000; ++i)
     {
-        if(Numbers[i] != 1)
-        {
+        if(Ctor[i] == 0)
             cout << i << "\n";
-        }
     }
+    
 }
