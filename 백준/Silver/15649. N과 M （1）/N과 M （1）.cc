@@ -1,31 +1,34 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
-#include <queue>
+
 
 using namespace std;
-int N, M;
-int Numbers[9];
-bool Visited[9];
 
+int N, M;
+
+vector<int> Nums;
+int Choice[9] = {};
+bool Visited[9];
 
 void Dfs(int Depth)
 {
     if(Depth == M)
     {
-        for(int  i = 0 ; i < M; ++i)
+        for(int i =0; i < M; ++i)
         {
-            cout << Numbers[i] << " ";
+            cout << Choice[i] << " ";
         }
         cout << "\n";
         return;
     }
     
-    for(int i = 1; i <= N; ++i)
+    for(int i = 0; i < Nums.size(); ++i)
     {
-        if(false == Visited[i])
+        if(Visited[i] == false)
         {
             Visited[i] = true;
-            Numbers[Depth] = i;
+            Choice[Depth] = Nums[i];
             Dfs(Depth + 1);
             Visited[i] = false;
         }
@@ -35,6 +38,11 @@ void Dfs(int Depth)
 int main(void)
 {
     cin >> N >> M;
-    Dfs(0);
     
+    for(int i =0; i < N; ++i)
+    {
+        Nums.push_back(i + 1);
+    }
+    
+    Dfs(0);
 }
