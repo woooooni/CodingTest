@@ -2,86 +2,113 @@
 #include <string>
 #include <queue>
 
-
-// 시작 정점이 여러 개인 BFS 문제.
-
 using namespace std;
+int N,M;
 
-int M, N;
-int Dx[4] = {0, 0, -1, 1};
-int Dy[4] = {-1, 1, 0, 0};
+int Map[1001][1001];
+bool Visited[1001][1001];
 
-struct Tomato
+int DirX[4] = {0, 0, -1, 1};
+int DirY[4] = {-1, 1, 0, 0};
+
+bool IsIn(int X, int Y)
 {
-    int y, x;
-};
-
-int Box[1001][1001];
-queue<Tomato> q;
-
-bool Is_BoxIn(int Ny, int Nx)
-{
-    return (0 <= Ny && Ny < N && 0 <= Nx && Nx < M);
+    return 0 <= X && 0 <= Y && X < M && Y < N;
 }
-
-void Bfs(void)
+int Bfs()
 {
-    while(!q.empty())
+    int Result = 0;
+    queue<pair<pair<int, int>, int>> q;
+    for(int i = 0; i  < N; ++i)
     {
-        int y = q.front().y;
-        int x = q.front().x;
-        
-        q.pop();
-        
-        for(int i = 0; i<4; ++i)
+        for(int j =0; j < M; ++j)
         {
-            int Ny = y + Dy[i];
-            int Nx = x + Dx[i];
-            if((true == Is_BoxIn(Ny, Nx)) && Box[Ny][Nx] == 0)
+            if(Map[i][j] == 1)
             {
-                Box[Ny][Nx] = Box[y][x] + 1;
-                q.push({Ny, Nx});
+                q.push(make_pair(make_pair(j, i), 0));
+                Visited[i][j] = true;
             }
         }
     }
+    
+    while(!q.empty())
+    {
+        pair<int, int> Current = q.front().first;
+        int Day = q.front().second;
+        q.pop();
+        
+        Result = max(Result, Day);
+        for(int i =0 ; i < 4; ++i)
+        {
+            int NextX = Current.first + DirX[i];
+            int NextY = Current.second + DirY[i];
+            
+            if(IsIn(NextX, NextY))
+            {
+                if(Map[NextY][NextX] == 0 && Visited[NextY][NextX] == false)
+                {
+                    Visited[NextY][NextX] = true;
+                    Map[NextY][NextX] = 1;
+                    q.push(make_pair(make_pair(NextX, NextY), Day + 1));
+                }
+            }
+        }
+    }
+    
+    return Result;
+}
+
+bool Check()
+{
+    for(int i = 0; i  < N; ++i)
+    {
+        for(int j =0; j < M; ++j)
+        {
+            if(Map[i][j] == 0)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 int main(void)
 {
+    
     cin >> M >> N;
     
-    for(int i = 0; i < N; ++i)
+    bool bAlready = true;
+    int Day = 0;
+    
+    for(int i = 0; i  < N; ++i)
     {
-        for(int j = 0; j < M; ++j)
+        for(int j =0; j < M; ++j)
         {
-            cin >> Box[i][j];
-            if(Box[i][j] == 1)
+            cin >> Map[i][j];
+            if(Map[i][j] == 0)
             {
-                q.push({i, j});
+                bAlready = false;
             }
         }
     }
-    Bfs();
     
-    
-    int Max = 0;
-    for(int i = 0; i < N; ++i)
+    if(bAlready)
     {
-        for(int j = 0; j < M; ++j)
-        {
-            if(Box[i][j] == 0)
-            {
-                cout << -1 << "\n";
-                return 0;
-            }
-            
-            if(Max < Box[i][j])
-                Max = Box[i][j];
-        }
+        cout << 0;
+        return 0;
     }
     
-    cout << Max - 1 << "\n";
+    int Answer = Bfs();
     
-    return 0;
+    if(Check())
+    {
+        cout << Answer;
+    }
+    else
+    {
+        cout << -1;
+    }
+    
     
 }
