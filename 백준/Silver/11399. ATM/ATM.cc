@@ -1,36 +1,37 @@
 #include <iostream>
-#include <string>
 #include <vector>
-#include <list>
-#include <map>
-#include <stack>
-#include <queue>
 #include <algorithm>
 
 using namespace std;
-int main()
+
+int N;
+vector<pair<int, int>> People;
+
+int main(void)
 {
-#pragma region BOJ 11399 ATM
-	int n;
-	cin >> n;
-	vector<int>line;
-
-	for (int i = 0; i < n; i++) 
-	{
-		int k;
-		cin >> k;
-		line.push_back(k);
-	}
-
-	sort(line.begin(), line.end());
-
-	int answer = 0;
-	for (int i = 0; i < n; i++) 
-	{
-		answer += line[i] * (n - i);
-	}
-	cout << answer;
-
-	
-#pragma endregion
+    cin >> N;
+    
+    People.resize(N);
+    
+    for(int i = 0; i < People.size(); ++i)
+    {
+        cin >> People[i].first;
+        People[i].second = i;
+    }
+    sort(People.begin(), People.end());
+    
+    int Ans = 0;
+    for(int i = 1; i < People.size(); ++i)
+    {
+        People[i].first += People[i - 1].first;
+    }
+    
+    for(int i = 0; i < People.size(); ++i)
+    {
+        Ans += People[i].first;
+    }
+   
+    
+    
+    cout << Ans;
 }
