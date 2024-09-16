@@ -1,45 +1,57 @@
 #include <iostream>
 #include <string>
-#include <vector>
-
-
+#include <queue>
 using namespace std;
 
-vector<int> Graph[101];
-bool Visited[101] = {};
-int N;
-int Result = 0;
-void Dfs(int Start = 1)
+int N, M;
+
+vector<int> Computers[101];
+bool Visited[101];
+
+void Bfs()
 {
-    Visited[Start] = true;
-    for(int i = 0; i < Graph[Start].size(); ++i)
+    queue<int> q;
+    q.push(1);
+    Visited[1] = true;
+    
+    while(!q.empty())
     {
-        int Next = Graph[Start][i];
-        if(Visited[Next] == false)
+        int Index = q.front();
+        q.pop();
+        
+        for(int i = 0; i < Computers[Index].size(); ++i)
         {
-            Result++;
-            Dfs(Next);
+            int Next = Computers[Index][i];
+            if(Visited[Next] == false)
+            {
+                Visited[Next] = true;
+                q.push(Next);
+            }
         }
     }
 }
 
 int main(void)
 {
-    cin >> N;
-    int M;
-    cin >> M;
+    cin >> N >> M;
     
     for(int i = 0; i < M; ++i)
     {
         int From, To;
         cin >> From >> To;
-        
-        Graph[From].push_back(To);
-        Graph[To].push_back(From);
+        Computers[From].push_back(To);
+        Computers[To].push_back(From);
     }
     
-    Dfs();
+    Bfs();
     
-    cout << Result;
-    
+    int Answer = 0;
+    for(int i = 0;  i <= N; ++i)
+    {
+        if(Visited[i] == true)
+        {
+            Answer++;
+        }
+    }
+    cout << Answer - 1;
 }
