@@ -1,31 +1,51 @@
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <string>
+#include <vector>
+#include <climits>
 using namespace std;
 
-int arr[100001];
-
-int main(void) {
-    ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-
-    int N, S;
+int N, S;
+int main(void)
+{
+    vector<int> Nums;
+    
     cin >> N >> S;
-    for(int i = 1; i <= N; i++)
-        cin >> arr[i];
-
-    int start = 1, end = 1;
-    int sum = arr[1];
-    int ans = INT_MAX;
-    while(start <= end && end <= N){
-        if(sum >= S) ans = min(ans, end-start+1);
-        if(sum < S){
-            end++;
-            sum += arr[end]; 
-        }else{
-            sum -= arr[start];
-            start++;
+    Nums.resize(N);
+    for(int i = 0; i < N; ++i)
+    {
+        cin >> Nums[i];
+    }
+    
+    int Start = 0;
+    int End = 0;
+    int Sum = 0;
+    
+    int Answer = INT_MAX;
+    while(Start <= End)
+    {
+        if(Sum >= S)
+        {
+            Answer = min(Answer, End - Start);
+            Sum -= Nums[Start++];
+        }
+        else if(End >= Nums.size())
+        {
+            break;
+        }
+        else
+        {
+            Sum += Nums[End++];
         }
     }
-    if(ans == INT_MAX) cout << 0 << '\n';
-    else cout << ans << '\n';
-	return 0;
+    
+    if(Answer == INT_MAX)
+    {
+        cout << 0;
+    }
+    else
+    {
+        cout << Answer;
+    }
+    
+    
 }
