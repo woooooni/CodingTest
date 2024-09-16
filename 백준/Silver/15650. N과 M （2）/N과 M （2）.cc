@@ -1,33 +1,30 @@
 #include <iostream>
 #include <string>
-#include <vector>
-
 
 using namespace std;
 
 int N, M;
-
-int Arr[9];
 bool Visited[9];
+int Selected[9];
 
-void Dfs(int Num, int Depth)
+void Dfs(int Start, int Depth)
 {
     if(Depth == M)
     {
         for(int i = 0; i < M; ++i)
         {
-            cout << Arr[i] << " ";
+            cout << Selected[i] << " ";
         }
         cout << "\n";
         return;
     }
     
-    for(int i = Num; i <= N; ++i)
+    for(int i = Start; i <= N; ++i)
     {
         if(Visited[i] == false)
         {
             Visited[i] = true;
-            Arr[Depth] = i;
+            Selected[Depth] = i;
             Dfs(i + 1, Depth + 1);
             Visited[i] = false;
         }
@@ -37,6 +34,5 @@ void Dfs(int Num, int Depth)
 int main(void)
 {
     cin >> N >> M;
-    
     Dfs(1, 0);
 }
