@@ -1,41 +1,37 @@
 #include <iostream>
-#include <string>
 #include <vector>
-
 
 using namespace std;
 
-int N;
-int S;
+int N, S;
+
+bool Visited[21];
+int Nums[21];
 int Answer = 0;
 
-vector<int> Numbers;
-void Dfs(int Sum, int Depth)
+void Dfs(int Depth, int Sum)
 {
     if(Depth == N)
     {
-        if(Sum == S)
-        {
-            Answer++;
-        }
         return;
     }
-    Dfs(Sum, Depth + 1);
-    Dfs(Sum + Numbers[Depth], Depth + 1);
+        
+    if(Sum + Nums[Depth] == S)    
+        Answer++;    
+        
+    Dfs(Depth + 1, Sum);
+    Dfs(Depth + 1, Sum + Nums[Depth]);
 }
 
 int main(void)
-{
+{   
     cin >> N >> S;
-    Numbers.resize(N);
     
-    for(int i =0 ; i < N; ++i)
+    for(int i = 0; i < N; ++i)
     {
-        cin >> Numbers[i];
+        cin >> Nums[i];
     }
     
     Dfs(0, 0);
-    
-    Answer = S == 0 ? Answer - 1 : Answer;
     cout << Answer;
 }
