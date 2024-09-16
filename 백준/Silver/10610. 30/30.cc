@@ -1,29 +1,47 @@
-#include<iostream>
-#include<algorithm>
-#include<vector>
-#include<string>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
-string s;
-vector<int> v;
-int N, sum;
 
-int main()
+int main(void)
 {
-	ios_base::sync_with_stdio(0);
-	cin.tie();
-
-	cin >> s;
-
-	for (int i = 0; i < s.size(); i++)
-	{
-		v.push_back(s[i] - '0');
-		sum += v[i];
-	}
-
-	sort(v.begin(), v.end(), greater<int>());
-
-	if (v[v.size() - 1] == 0 && sum % 3 == 0)
-		for (int i = 0; i < v.size(); i++) cout << v[i];
-	else cout << -1;
+    string Input;
+    cin >> Input;
+    
+    vector<int> Nums;
+    
+    for(int i = 0; i < Input.size(); ++i)
+    {
+        Nums.push_back(Input[i] - '0');
+    }
+    
+    sort(Nums.begin(), Nums.end(), greater<int>());
+    
+    if(Nums[Nums.size() - 1] != 0)
+    {
+        cout << -1;
+        return 0;
+    }
+    
+    long long Sum = 0;
+    for(int i =0 ; i <Nums.size(); ++i)
+    {
+        Sum += Nums[i];
+    }
+    
+    if(Sum % 3 == 0)
+    {
+        for(int i = 0; i < Nums.size(); ++i)
+        {
+            cout << Nums[i];
+        }
+    }
+    else
+    {
+        cout << -1;
+    }
+        
 }
