@@ -1,18 +1,22 @@
-#include <stdio.h>
+#include <iostream>
 
-int main() {
-	int a, b;
-	scanf("%d %d", &a, &b);
+using namespace std;
 
-	if (a > b) {
-		printf(">\n");
-	}
-	else if (a < b) {
-		printf("<\n");
-	}
-	else {
-		printf("==\n");
-	}
-
-	return 0;
+int main(void)
+{
+    int a, b;
+    cin >> a >> b;
+    
+    if(a > b)
+    {
+        cout << ">";
+    }
+    else if(a < b)
+    {
+        cout << "<";
+    }
+    else
+    {
+        cout << "==";
+    }
 }
